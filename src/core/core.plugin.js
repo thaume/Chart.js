@@ -71,23 +71,34 @@ module.exports = function(Chart) {
 		 * returned value can be used, for instance, to interrupt the current action.
 		 * @param {String} extension the name of the plugin method to call (e.g. 'beforeUpdate').
 		 * @param {Array} [args] extra arguments to apply to the extension call.
+		 * @param {ChartInstance} the chart instance for dispatching any inlint plugins.
 		 * @returns {Boolean} false if any of the plugins return false, else returns true.
 		 */
-		notify: function(extension, args) {
-			var plugins = this._plugins;
-			var ilen = plugins.length;
-			var i, plugin;
+		notify: function(extension, args, chartInstance) {
+			function doNotifyPlugins(plugins) {
+				var ilen = plugins.length;
+				var i, plugin;
 
-			for (i=0; i<ilen; ++i) {
-				plugin = plugins[i];
-				if (typeof plugin[extension] === 'function') {
-					if (plugin[extension].apply(plugin, args || []) === false) {
-						return false;
+				for (i=0; i<ilen; ++i) {
+					plugin = plugins[i];
+					if (typeof plugin[extension] === 'function') {
+						if (plugin[extension].apply(plugin, args || []) === false) {
+							return false;
+						}
 					}
 				}
+
+				return true;
 			}
 
-			return true;
+			var status = doNotifyPlugins(this._plugins);
+			var options = chartInstance ? chartInstance.options : null;
+
+			if (status && options && options.plugins) {
+				status = doNotifyPlugins(options.plugins);
+			}
+
+			return status;
 		}
 	};
 
