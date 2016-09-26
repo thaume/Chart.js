@@ -673,25 +673,29 @@ module.exports = function(Chart) {
 	};
 	// Request animation polyfill - http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
 	helpers.requestAnimFrame = (function() {
-		return window.requestAnimationFrame ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.oRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			function(callback) {
-				return window.setTimeout(callback, 1000 / 60);
-			};
-	}());
+		// TODO NODE.JS
+		// TODO animation
+		// return window.requestAnimationFrame ||
+		// 	window.webkitRequestAnimationFrame ||
+		// 	window.mozRequestAnimationFrame ||
+		// 	window.oRequestAnimationFrame ||
+		// 	window.msRequestAnimationFrame ||
+		return function(callback) {
+			return window.setTimeout(callback, 1000 / 60);
+		};
+	})();
 	helpers.cancelAnimFrame = (function() {
-		return window.cancelAnimationFrame ||
-			window.webkitCancelAnimationFrame ||
-			window.mozCancelAnimationFrame ||
-			window.oCancelAnimationFrame ||
-			window.msCancelAnimationFrame ||
-			function(callback) {
-				return window.clearTimeout(callback, 1000 / 60);
-			};
-	}());
+		// TODO NODE.JS
+		// TODO animation
+		// return window.cancelAnimationFrame ||
+		// 	window.webkitCancelAnimationFrame ||
+		// 	window.mozCancelAnimationFrame ||
+		// 	window.oCancelAnimationFrame ||
+		// 	window.msCancelAnimationFrame ||
+		return function(callback) {
+			return window.clearTimeout(callback, 1000 / 60);
+		};
+	})();
 	// -- DOM methods
 	helpers.getRelativePosition = function(evt, chart) {
 		var mouseX, mouseY;
@@ -822,32 +826,37 @@ module.exports = function(Chart) {
 		return getConstraintDimension(domNode, 'max-height', 'clientHeight');
 	};
 	helpers.getMaximumWidth = function(domNode) {
-		var container = domNode.parentNode;
-		var paddingLeft = parseInt(helpers.getStyle(container, 'padding-left'), 10);
-		var paddingRight = parseInt(helpers.getStyle(container, 'padding-right'), 10);
-		var w = container.clientWidth - paddingLeft - paddingRight;
-		var cw = helpers.getConstraintWidth(domNode);
-		return isNaN(cw)? w : Math.min(w, cw);
+		// TODO NODE.JS
+		// var container = domNode.parentNode;
+		// var padding = parseInt(helpers.getStyle(container, 'padding-left')) + parseInt(helpers.getStyle(container, 'padding-right'));
+		// var w = container.clientWidth - padding;
+		// var cw = helpers.getConstraintWidth(domNode);
+		// return isNaN(cw)? w : Math.min(w, cw);
+		return 960;
 	};
 	helpers.getMaximumHeight = function(domNode) {
-		var container = domNode.parentNode;
-		var paddingTop = parseInt(helpers.getStyle(container, 'padding-top'), 10);
-		var paddingBottom = parseInt(helpers.getStyle(container, 'padding-bottom'), 10);
-		var h = container.clientHeight - paddingTop - paddingBottom;
-		var ch = helpers.getConstraintHeight(domNode);
-		return isNaN(ch)? h : Math.min(h, ch);
+		// TODO NODE.JS
+		// var container = domNode.parentNode;
+		// var padding = parseInt(helpers.getStyle(container, 'padding-top')) + parseInt(helpers.getStyle(container, 'padding-bottom'));
+		// var h = container.clientHeight - padding;
+		// var ch = helpers.getConstraintHeight(domNode);
+		// return isNaN(ch)? h : Math.min(h, ch);
+		return 500;
 	};
-	helpers.getStyle = function(el, property) {
-		return el.currentStyle ?
-			el.currentStyle[property] :
-			document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
-	};
+	// helpers.getStyle = function(el, property) {
+	// 	return el.currentStyle ?
+	// 		el.currentStyle[property] :
+	// 		document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
+	// };
 	helpers.retinaScale = function(chart) {
 		var ctx = chart.ctx;
 		var canvas = chart.canvas;
 		var width = canvas.width;
 		var height = canvas.height;
-		var pixelRatio = chart.currentDevicePixelRatio = window.devicePixelRatio || 1;
+
+		// TODO NODE.JS
+		// var pixelRatio = chart.currentDevicePixelRatio = window.devicePixelRatio || 1;
+		var pixelRatio = chart.currentDevicePixelRatio = 1;
 
 		if (pixelRatio !== 1) {
 			canvas.height = height * pixelRatio;
@@ -859,6 +868,12 @@ module.exports = function(Chart) {
 			// when destroy is called
 			chart.originalDevicePixelRatio = chart.originalDevicePixelRatio || pixelRatio;
 		}
+
+		// TODO NODE.JS
+		canvas.width = width + 'px';
+		canvas.height = height + 'px';
+		// canvas.style.width = width + 'px';
+		// canvas.style.height = height + 'px';
 	};
 	// -- Canvas methods
 	helpers.clear = function(chart) {

@@ -47,4 +47,6 @@ require('./charts/Chart.PolarArea')(Chart);
 require('./charts/Chart.Radar')(Chart);
 require('./charts/Chart.Scatter')(Chart);
 
-window.Chart = module.exports = Chart;
+// TODO NODE.JS
+// window.Chart = module.exports = Chart;
+module.exports = Chart;

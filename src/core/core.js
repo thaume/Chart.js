@@ -18,6 +18,52 @@ module.exports = function() {
 
 		me.controller = new Chart.Controller(context, config, me);
 
+		me.ctx = context;
+		me.canvas = context.canvas;
+
+		// TODO NODE.JS
+		// context.canvas.style.display = context.canvas.style.display || 'block';
+
+		// Figure out what the size of the chart will be.
+		// If the canvas has a specified width and height, we use those else
+		// we look to see if the canvas node has a CSS width and height.
+		// If there is still no height, fill the parent container
+
+		// TODO NODE.JS
+		// me.width = context.canvas.width || parseInt(helpers.getStyle(context.canvas, 'width'), 10) || helpers.getMaximumWidth(context.canvas);
+		// me.height = context.canvas.height || parseInt(helpers.getStyle(context.canvas, 'height'), 10) || helpers.getMaximumHeight(context.canvas);
+		me.width = context.width;
+		me.height = context.height;
+
+		me.aspectRatio = me.width / me.height;
+
+		if (isNaN(me.aspectRatio) || isFinite(me.aspectRatio) === false) {
+			// If the canvas has no size, try and figure out what the aspect ratio will be.
+			// Some charts prefer square canvases (pie, radar, etc). If that is specified, use that
+			// else use the canvas default ratio of 2
+			me.aspectRatio = config.aspectRatio !== undefined ? config.aspectRatio : 2;
+		}
+
+		// Store the original style of the element so we can set it back
+
+		// TODO NODE.JS
+		// me.originalCanvasStyleWidth = context.canvas.style.width;
+		// me.originalCanvasStyleHeight = context.canvas.style.height;
+		me.originalCanvasStyleWidth = context.width;
+		me.originalCanvasStyleHeight = context.height;
+
+		// High pixel density displays - multiply the size of the canvas height/width by the device pixel ratio, then scale.
+		helpers.retinaScale(me);
+
+		// Always bind this so that if the responsive state changes we still work
+
+		// TODO NODE.JS
+		// helpers.addResizeListener(context.canvas.parentNode, function() {
+		// 	if (me.controller && me.controller.config.options.responsive) {
+		// 		me.controller.resize();
+		// 	}
+		// });
+
 		return me.controller;
 	};
 

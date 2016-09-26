@@ -69,10 +69,13 @@ module.exports = function(Chart) {
 				// Skip animation frame requests until the active one is executed.
 				// This can happen when processing mouse events, e.g. 'mousemove'
 				// and 'mouseout' events will trigger multiple renders.
-				me.request = helpers.requestAnimFrame.call(window, function() {
+
+				// TODO NODE.JS
+				// TODO animation
+				// me.request = helpers.requestAnimFrame.call(window, function() {
 					me.request = null;
 					me.startDigest();
-				});
+				// });
 			}
 		},
 		startDigest: function() {

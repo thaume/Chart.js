@@ -177,7 +177,9 @@ module.exports = function(Chart) {
 				}
 
 				ctx.save();
-				ctx.translate(titleX, titleY);
+				// TODO NODE.JS
+				// ctx.translate(titleX, titleY);
+				ctx.translate(50, titleY);
 				ctx.rotate(rotation);
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'middle';
