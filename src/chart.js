@@ -48,5 +48,9 @@ require('./charts/Chart.Radar')(Chart);
 require('./charts/Chart.Scatter')(Chart);
 
 // TODO NODE.JS
-// window.Chart = module.exports = Chart;
-module.exports = Chart;
+if (typeof window !== 'undefined') {
+  window.Chart = module.exports = Chart;
+} else {
+  module.exports = Chart;
+}
+

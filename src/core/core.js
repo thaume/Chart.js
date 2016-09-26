@@ -58,11 +58,13 @@ module.exports = function() {
 		// Always bind this so that if the responsive state changes we still work
 
 		// TODO NODE.JS
-		// helpers.addResizeListener(context.canvas.parentNode, function() {
-		// 	if (me.controller && me.controller.config.options.responsive) {
-		// 		me.controller.resize();
-		// 	}
-		// });
+		if (typeof window !== 'undefined') {
+			helpers.addResizeListener(context.canvas.parentNode, function() {
+				if (me.controller && me.controller.config.options.responsive) {
+					me.controller.resize();
+				}
+			});
+		}
 
 		return me.controller;
 	};
