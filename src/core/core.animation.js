@@ -72,10 +72,15 @@ module.exports = function(Chart) {
 
 				// TODO NODE.JS
 				// TODO animation
-				// me.request = helpers.requestAnimFrame.call(window, function() {
+				if (typeof window !== 'undefined') {
+					me.request = helpers.requestAnimFrame.call(window, function() {
+						me.request = null;
+						me.startDigest();
+					});
+				} else {
 					me.request = null;
 					me.startDigest();
-				// });
+				}
 			}
 		},
 		startDigest: function() {

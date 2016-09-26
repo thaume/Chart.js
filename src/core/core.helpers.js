@@ -675,26 +675,38 @@ module.exports = function(Chart) {
 	helpers.requestAnimFrame = (function() {
 		// TODO NODE.JS
 		// TODO animation
-		// return window.requestAnimationFrame ||
-		// 	window.webkitRequestAnimationFrame ||
-		// 	window.mozRequestAnimationFrame ||
-		// 	window.oRequestAnimationFrame ||
-		// 	window.msRequestAnimationFrame ||
-		return function(callback) {
-			return window.setTimeout(callback, 1000 / 60);
-		};
+		if (typeof window !== 'undefined') {
+			return window.requestAnimationFrame ||
+				window.webkitRequestAnimationFrame ||
+				window.mozRequestAnimationFrame ||
+				window.oRequestAnimationFrame ||
+				window.msRequestAnimationFrame ||
+				function(callback) {
+					return window.setTimeout(callback, 1000 / 60);
+				};
+		} else {
+			return function(callback) {
+				return window.setTimeout(callback, 1000 / 60);
+			};
+		}
 	})();
 	helpers.cancelAnimFrame = (function() {
 		// TODO NODE.JS
 		// TODO animation
-		// return window.cancelAnimationFrame ||
-		// 	window.webkitCancelAnimationFrame ||
-		// 	window.mozCancelAnimationFrame ||
-		// 	window.oCancelAnimationFrame ||
-		// 	window.msCancelAnimationFrame ||
-		return function(callback) {
-			return window.clearTimeout(callback, 1000 / 60);
-		};
+		if (typeof window !== 'undefined') {
+			return window.cancelAnimationFrame ||
+				window.webkitCancelAnimationFrame ||
+				window.mozCancelAnimationFrame ||
+				window.oCancelAnimationFrame ||
+				window.msCancelAnimationFrame ||
+				function(callback) {
+					return window.clearTimeout(callback, 1000 / 60);
+				};
+		} else {
+			return function(callback) {
+				return window.clearTimeout(callback, 1000 / 60);
+			};
+		}
 	})();
 	// -- DOM methods
 	helpers.getRelativePosition = function(evt, chart) {
@@ -827,27 +839,35 @@ module.exports = function(Chart) {
 	};
 	helpers.getMaximumWidth = function(domNode) {
 		// TODO NODE.JS
-		// var container = domNode.parentNode;
-		// var padding = parseInt(helpers.getStyle(container, 'padding-left')) + parseInt(helpers.getStyle(container, 'padding-right'));
-		// var w = container.clientWidth - padding;
-		// var cw = helpers.getConstraintWidth(domNode);
-		// return isNaN(cw)? w : Math.min(w, cw);
-		return 960;
+		if (typeof window !== 'undefined') {
+			var container = domNode.parentNode;
+			var padding = parseInt(helpers.getStyle(container, 'padding-left')) + parseInt(helpers.getStyle(container, 'padding-right'));
+			var w = container.clientWidth - padding;
+			var cw = helpers.getConstraintWidth(domNode);
+			return isNaN(cw)? w : Math.min(w, cw);
+		} else {
+			// TODO MAGIC
+			return 960;
+		}
 	};
 	helpers.getMaximumHeight = function(domNode) {
 		// TODO NODE.JS
-		// var container = domNode.parentNode;
-		// var padding = parseInt(helpers.getStyle(container, 'padding-top')) + parseInt(helpers.getStyle(container, 'padding-bottom'));
-		// var h = container.clientHeight - padding;
-		// var ch = helpers.getConstraintHeight(domNode);
-		// return isNaN(ch)? h : Math.min(h, ch);
-		return 500;
+		if (typeof window !== 'undefined') {
+			var container = domNode.parentNode;
+			var padding = parseInt(helpers.getStyle(container, 'padding-top')) + parseInt(helpers.getStyle(container, 'padding-bottom'));
+			var h = container.clientHeight - padding;
+			var ch = helpers.getConstraintHeight(domNode);
+			return isNaN(ch)? h : Math.min(h, ch);
+		} else {
+			// TODO MAGIC
+			return 500;
+		}
 	};
-	// helpers.getStyle = function(el, property) {
-	// 	return el.currentStyle ?
-	// 		el.currentStyle[property] :
-	// 		document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
-	// };
+	helpers.getStyle = function(el, property) {
+		return el.currentStyle ?
+			el.currentStyle[property] :
+			document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
+	};
 	helpers.retinaScale = function(chart) {
 		var ctx = chart.ctx;
 		var canvas = chart.canvas;
@@ -870,10 +890,14 @@ module.exports = function(Chart) {
 		}
 
 		// TODO NODE.JS
-		canvas.width = width + 'px';
-		canvas.height = height + 'px';
-		// canvas.style.width = width + 'px';
-		// canvas.style.height = height + 'px';
+		if (typeof window !== 'undefined') {
+			canvas.style.width = width + 'px';
+			canvas.style.height = height + 'px';
+		} else {
+			canvas.width = width + 'px';
+			canvas.height = height + 'px';
+		}
+
 	};
 	// -- Canvas methods
 	helpers.clear = function(chart) {

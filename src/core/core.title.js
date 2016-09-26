@@ -178,8 +178,12 @@ module.exports = function(Chart) {
 
 				ctx.save();
 				// TODO NODE.JS
-				// ctx.translate(titleX, titleY);
-				ctx.translate(50, titleY);
+				// TODO MAGIC
+				if (typeof window !== 'undefined') {
+					ctx.translate(titleX, titleY);
+				} else {
+					ctx.translate(50, titleY);
+				}
 				ctx.rotate(rotation);
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'middle';

@@ -22,18 +22,21 @@ module.exports = function() {
 		me.canvas = context.canvas;
 
 		// TODO NODE.JS
-		// context.canvas.style.display = context.canvas.style.display || 'block';
+		if (typeof window !== 'undefined') {
+			context.canvas.style.display = context.canvas.style.display || 'block';
+		}
 
 		// Figure out what the size of the chart will be.
 		// If the canvas has a specified width and height, we use those else
 		// we look to see if the canvas node has a CSS width and height.
 		// If there is still no height, fill the parent container
-
-		// TODO NODE.JS
-		// me.width = context.canvas.width || parseInt(helpers.getStyle(context.canvas, 'width'), 10) || helpers.getMaximumWidth(context.canvas);
-		// me.height = context.canvas.height || parseInt(helpers.getStyle(context.canvas, 'height'), 10) || helpers.getMaximumHeight(context.canvas);
-		me.width = context.width;
-		me.height = context.height;
+		if (typeof window !== 'undefined') {
+			me.width = context.canvas.width || parseInt(helpers.getStyle(context.canvas, 'width'), 10) || helpers.getMaximumWidth(context.canvas);
+			me.height = context.canvas.height || parseInt(helpers.getStyle(context.canvas, 'height'), 10) || helpers.getMaximumHeight(context.canvas);
+		} else {
+			me.width = context.width;
+			me.height = context.height;
+		}
 
 		me.aspectRatio = me.width / me.height;
 
@@ -47,13 +50,18 @@ module.exports = function() {
 		// Store the original style of the element so we can set it back
 
 		// TODO NODE.JS
-		// me.originalCanvasStyleWidth = context.canvas.style.width;
-		// me.originalCanvasStyleHeight = context.canvas.style.height;
-		me.originalCanvasStyleWidth = context.width;
-		me.originalCanvasStyleHeight = context.height;
+		if (typeof window !== 'undefined') {
+			me.originalCanvasStyleWidth = context.canvas.style.width;
+			me.originalCanvasStyleHeight = context.canvas.style.height;
+		} else {
+			me.originalCanvasStyleWidth = context.width;
+			me.originalCanvasStyleHeight = context.height;
+		}
 
 		// High pixel density displays - multiply the size of the canvas height/width by the device pixel ratio, then scale.
-		helpers.retinaScale(me);
+		if (typeof window !== 'undefined') {
+			helpers.retinaScale(me);
+		}
 
 		// Always bind this so that if the responsive state changes we still work
 

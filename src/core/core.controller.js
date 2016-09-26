@@ -41,26 +41,36 @@ module.exports = function(Chart) {
 
 		// NOTE(SB) canvas.getAttribute('width') !== canvas.width: in the first case it
 		// returns null or '' if no explicit value has been set to the canvas attribute.
-		var renderHeight = canvas.getAttribute('height');
-		var renderWidth = canvas.getAttribute('width');
+
+		// TODO NODE.JS
+		if (typeof window !== 'undefined') {
+			var renderHeight = canvas.getAttribute('height');
+			var renderWidth = canvas.getAttribute('width');
+		} else {
+			var renderHeight = canvas.height;
+			var renderWidth = canvas.width;
+		}
 
 		// Chart.js modifies some canvas values that we want to restore on destroy
-		canvas._chartjs = {
-			initial: {
-				height: renderHeight,
-				width: renderWidth,
-				style: {
-					display: style.display,
-					height: style.height,
-					width: style.width
-				}
-			}
-		};
+		// TODO NODE.JS
+		// canvas._chartjs = {
+		// 	initial: {
+		// 		height: renderHeight,
+		// 		width: renderWidth,
+		// 		style: {
+		// 			display: style.display,
+		// 			height: style.height,
+		// 			width: style.width
+		// 		}
+		// 	}
+		// };
 
 		// Force canvas to display as block to avoid extra space caused by inline
 		// elements, which would interfere with the responsive resize process.
 		// https://github.com/chartjs/Chart.js/issues/2538
-		style.display = style.display || 'block';
+		if (typeof window !== 'undefined') {
+			style.display = style.display || 'block';
+		}
 
 		if (renderWidth === null || renderWidth === '') {
 			var displayWidth = readUsedSize(canvas, 'width');
@@ -161,11 +171,13 @@ module.exports = function(Chart) {
 		});
 
 		// Always bind this so that if the responsive state changes we still work
-		helpers.addResizeListener(canvas.parentNode, function() {
-			if (me.config.options.responsive) {
-				me.resize();
-			}
-		});
+		if (typeof window !== 'undefined') {
+			helpers.addResizeListener(canvas.parentNode, function() {
+				if (me.config.options.responsive) {
+					me.resize();
+				}
+			});
+		}
 
 		// Add the chart instance to the global namespace
 		Chart.instances[me.id] = me;

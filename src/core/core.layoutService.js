@@ -33,10 +33,14 @@ module.exports = function(Chart) {
 			}
 
 			// TODO node.js
-			// var xPadding = 0;
-			// var yPadding = 0;
-			var xPadding = 50;
-			var yPadding = 15;
+			// TODO MAGIC
+			if (typeof window !== 'undefined') {
+				var xPadding = 0;
+				var yPadding = 0;
+			} else {
+				var xPadding = 50;
+				var yPadding = 15;
+			}
 
 			var leftBoxes = helpers.where(chartInstance.boxes, function(box) {
 				return box.options.position === 'left';
